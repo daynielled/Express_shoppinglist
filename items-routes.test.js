@@ -31,8 +31,7 @@ describe("GET /items/:name", function () {
     test("Gets a single item", async function () {
         const res = await request(app).get(`/items/${newItem.name}`);
         expect(res.status).toBe(200);
-        // expect(res.body).toEqual({newItem});
-        expect(res.body).toEqual({ item: popsicle });
+        expect(res.body).toEqual(newItem);
     });
 
     test("Responds with 404 if can't find item", async function () {

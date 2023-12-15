@@ -5,9 +5,9 @@ const items = require("./fakeDb");
 
 
 router.get('/', function (req, res, next) {
-    try{
-        return  res.json(items);
-    } catch(e) {
+    try {
+        return res.json(items);
+    } catch (e) {
         return next(e)
     }
 });
@@ -29,38 +29,23 @@ router.post('/', function (req, res, next) {
     }
 });
 
-// router.get("/:name", function (req, res, next) {
-//     try{
-//         const foundItem = items.find(item => item.name === req.params.name)
-//         if (foundItem === undefined) {
-//         throw new ExpressError("Item not found", 404)
-//     }
-//     res.json({ item:foundItem })
-//     } catch(e) {
-//         next(e);
-//     }
-// });
-const items = [
-    { name: "popsicle", price: 1.45 },
-    // Add more items as needed
-  ];
-  
-  // Route to get a single item by name
-  router.get("/:name", (req, res) => {
-    try{
+
+// Route to get a single item by name
+router.get("/:name", (req, res) => {
+    try {
         const itemName = req.params.name;
         const foundItem = items.find(item => item.name === itemName);
         if (!foundItem) {
             return res.status(404).json({ error: "Item not found" });
-    }
-    res.json(foundItem);
-   
-    } catch(e){
+        }
+        res.json(foundItem);
+
+    } catch (e) {
         console.error("Error in GET /:name route:", err);
         res.status(500).json({ error: "Internal Server Error" });
     }
-      
-  });
+
+});
 
 router.patch("/:name", function (req, res, next) {
     try {
@@ -89,10 +74,11 @@ router.patch("/:name", function (req, res, next) {
 router.delete("/:name", function (req, res, next) {
     try {
         const foundItem = items.filter(item => item.name === req.params.name)
-        if (foundItem.length === items.length) {
+        if (foundItem === -1) {
             throw new ExpressError("Item not found", 404)
         }
-        items= foundItem;
+        items.splice(foundItem, 1);
+
         res.json({ message: "Deleted" })
     } catch (e) {
         next(e);
@@ -101,3 +87,4 @@ router.delete("/:name", function (req, res, next) {
 });
 
 module.exports = router;
+
